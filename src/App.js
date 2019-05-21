@@ -1,9 +1,11 @@
 import React from 'react';
+import Palette from './components/Palette';
+import { generatePalette } from './utils/colorHelper';
 import defaultPalettes from './defaultPalettes';
 import './styles/styles.scss';
-import Palette from './components/Palette';
 
 function App() {
+  console.log(generatePalette(defaultPalettes[0]));
   return (
     <div className="App">
       <Palette {...defaultPalettes[0]}/>
