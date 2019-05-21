@@ -2,14 +2,14 @@
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	height: 6vh;
+	height: 10vh;
 }
 
 .logo {
 	margin-right: 20px;
 	padding: 0 20px;
 	font-size: 22px;
-	background-color: rgba(180, 180, 180, 0.925);
+	background-color: rgba(20, 20, 20, 0.95);
 	font-family: Roboto;
 	height: 100%;
 	display: flex;
@@ -17,8 +17,14 @@
 
 	a {
 		text-decoration: none;
+		color: white;
 	}
 
+}
+
+.select-container {
+	margin-left: auto;
+	margin-right: 10px;
 }
 
 .slider {
