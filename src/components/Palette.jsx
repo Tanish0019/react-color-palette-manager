@@ -39,9 +39,8 @@ class Palette extends Component {
 					}
 				</div>
 				<footer className="palette-footer">
-				{paletteName}
-				<span className="emoji">{emoji}</span>
-
+					{paletteName}
+					<span className="emoji">{emoji}</span>
 				</footer>
 			</div>
 		)
