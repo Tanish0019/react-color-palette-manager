@@ -8,7 +8,7 @@ function App() {
   console.log(generatePalette(defaultPalettes[0]));
   return (
     <div className="App">
-      <Palette {...defaultPalettes[0]}/>
+      <Palette palette={generatePalette(defaultPalettes[0])}/>
     </div>
   );
 }
