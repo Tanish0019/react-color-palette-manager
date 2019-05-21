@@ -60,7 +60,7 @@ const getRange = (hexColor) => {
 	const rangeEnd = '#fff';
 	
 	return [
-		chroma(hexColor).darken(1.4).hex(),
+		chroma(hexColor).darken(1.6).hex(),
 		hexColor,
 		rangeEnd
 	]
