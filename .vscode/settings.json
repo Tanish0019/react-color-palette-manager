@@ -1,0 +1,5 @@
+{
+	"editor.formatOnPaste": true,
+	"prettier.eslintIntegration": true,
+	"prettier.useTabs": true
+}
