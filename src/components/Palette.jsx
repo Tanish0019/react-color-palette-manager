@@ -20,6 +20,7 @@ class Palette extends Component {
 	render() {
 		const { level, format } = this.state;
 		const { colors, paletteName, emoji, id } = this.props.palette;
+		console.log("rendered");
 		return (
 			<div className="Palette">
 				<Navbar
