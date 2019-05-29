@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { withStyles } from "@material-ui/styles";
+import styles from '../styles/PaletteStyles';
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -30,17 +32,18 @@ class SingleColorPalette extends Component {
 	render() {
 		const { format } = this.state;
 		const { paletteName, emoji, id } = this.props.palette;
+		const { classes } = this.props;
 		const colorBoxes = this._shades.map(shade => (
 			<ColorBox name={shade.name} key={shade.name} color={shade[format]} />
 		));
 		return (
-			<div className="SingleColorPalette Palette">
+			<div className={classes.Palette}>
 				<Navbar handleFormatChange={this.handleFormatChange} paletteid={id} />
-				<div className="Palette-colors">{colorBoxes}</div>
+				<div className={classes.paletteColors}>{colorBoxes}</div>
 				<Footer paletteName={paletteName} emoji={emoji} />
 			</div>
 		);
 	}
 }
 
-export default SingleColorPalette;
+export default withStyles(styles)(SingleColorPalette);

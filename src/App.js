@@ -5,7 +5,6 @@ import PaletteList from "./components/PaletteList";
 import SingleColorPalette from "./components/SingleColorPalette";
 import { generatePalette } from "./utils/colorHelper";
 import defaultPalettes from "./defaultPalettes";
-import "./styles/styles.scss";
 
 function App() {
 	console.log(generatePalette(defaultPalettes[0]));
