@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Palette from "./components/Palette";
 import PaletteList from "./components/PaletteList";
 import SingleColorPalette from "./components/SingleColorPalette";
+import NewPaletteForm from './components/NewPaletteForm';
 import { generatePalette } from "./utils/colorHelper";
 import defaultPalettes from "./defaultPalettes";
 
@@ -14,6 +15,13 @@ function App() {
 				exact
 				path="/"
 				render={routeProps => <PaletteList {...routeProps} palettes={defaultPalettes} />}
+			/>
+			<Route
+				exact
+				path="/palette/new"
+				render={routeProps => (
+					<NewPaletteForm {...routeProps}/>
+				)}
 			/>
 			<Route
 				exact

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/styles";
 import styles from '../styles/ColorBoxStyles';
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import chroma from "chroma-js";
 
 class ColorBox extends Component {
 	constructor(props) {
@@ -32,7 +31,6 @@ class ColorBox extends Component {
 						<h1>Copied!</h1>
 						<p>{color}</p>
 					</div>
-
 					<div>
 						<div className={classes.boxContent}>
 							<span className={classes.colorName}>{name}</span>

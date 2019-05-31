@@ -14,9 +14,15 @@ export default {
 		alignItems: 'flex-start'
 	},
 	nav: {
+		padding: '40px 0',
 		display: 'flex',
 		width: '100%',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		color: 'white',
+		"& a": {
+			color: 'white'
+		}
 	},
 	palettes: {
 		width: '100%',
