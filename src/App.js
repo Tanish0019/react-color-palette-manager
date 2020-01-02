@@ -10,7 +10,7 @@ import defaultPalettes from "./defaultPalettes";
 class App extends React.Component {
 	
 	state = {
-		palettes: defaultPalettes
+		palettes: JSON.parse(window.localStorage.getItem("palettes")) || defaultPalettes
 	};
 	
 	findPalette = (id) => {
@@ -23,8 +23,18 @@ class App extends React.Component {
 		console.log(newPalette)
 		this.setState({
 			palettes: [...this.state.palettes, newPalette]
-		})
+		}, this.syncLocalStorage);		
 	};
+
+	deletePalette = (id) => {
+		this.setState(prevState => ({
+			palettes: prevState.palettes.filter(palette => palette.id !== id)
+		}), this.syncLocalStorage);
+	};
+
+	syncLocalStorage() {
+		window.localStorage.setItem("palettes", JSON.stringify(this.state.palettes));
+	}
 
 	render() {
 		return (
@@ -32,7 +42,7 @@ class App extends React.Component {
 				<Route
 					exact
 					path="/"
-					render={routeProps => <PaletteList {...routeProps} palettes={this.state.palettes} />}
+					render={routeProps => <PaletteList {...routeProps} palettes={this.state.palettes} deletePalette={this.deletePalette}/>}
 				/>
 				<Route
 					exact

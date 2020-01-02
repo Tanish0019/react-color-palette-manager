@@ -1,10 +1,10 @@
+import sizes from './sizes';
 export default (theme) => ({
 	button: {
 		margin: theme.spacing.unit,
 		marginRight: '20px',
 		height: '80%'
 	},
-	
 	Navbar: {
 		display: 'flex',
 		justifyContent: 'flex-start',
@@ -19,10 +19,12 @@ export default (theme) => ({
 		height: '100%',
 		display: 'flex',
 		alignItems: 'center',
-
 		"& a": {
 			textDecoration: 'none',
 			color: 'white',
+		},
+		[sizes.down("xs")]: {
+			display: "none"	
 		}
 	},
 
@@ -52,6 +54,9 @@ export default (theme) => ({
 			width: '16px',
 			height:'16px',
 			marginTop: '-3px',
+		},
+		[sizes.down("md")]: {
+			width: '150px'
 		}
 	}
 });
