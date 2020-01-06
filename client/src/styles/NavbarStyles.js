@@ -55,7 +55,7 @@ export default (theme) => ({
 			height:'16px',
 			marginTop: '-3px',
 		},
-		[sizes.down("md")]: {
+		[sizes.down("sm")]: {
 			width: '150px'
 		}
 	}

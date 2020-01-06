@@ -12,6 +12,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import DraggableColorList from './DraggableColorList';
 import ColorPickerForm from "./ColorPickerForm";
 import styles from '../styles/NewPaletteFormStyles';
+import defaultPalettes from '../defaultPalettes';
 
 class NewPaletteForm extends React.Component {
 	static defaultProps = {
@@ -20,7 +21,7 @@ class NewPaletteForm extends React.Component {
 	
 	state = {
 		open: true,
-		colors: this.props.palettes[0].colors,
+		colors: defaultPalettes[0].colors
 	};
 
 	toggleDrawer = () => {
@@ -61,8 +62,17 @@ class NewPaletteForm extends React.Component {
 
 	addRandomColor = () => {
 		const allColors = this.props.palettes.map(palette => palette.colors).flat();
-		const random = Math.floor(Math.random() * allColors.length);
-		const randomColor = allColors[random];
+		let random = Math.floor(Math.random() * allColors.length);
+		let randomColor = allColors[random];
+		let isDuplicateColor = true;
+		while (isDuplicateColor) {
+			random = Math.floor(Math.random() * allColors.length);
+			randomColor = allColors[random];
+			isDuplicateColor = this.state.colors.some(
+				// eslint-disable-next-line no-loop-func
+				color => color.name === randomColor.name
+			);
+		}
 		this.setState({colors: [...this.state.colors, randomColor] })
 	}
 

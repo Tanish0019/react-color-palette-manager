@@ -25,7 +25,7 @@ const generatePalette = (starterPalette) => {
 	console.log(starterPalette);
 	let newPalette = {
 		paletteName: starterPalette.paletteName,
-		id: starterPalette.id,
+		_id: starterPalette._id,
 		emoji: starterPalette.emoji,
 		colors: {}
 	};
