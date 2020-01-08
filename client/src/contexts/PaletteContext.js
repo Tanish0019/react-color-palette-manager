@@ -19,7 +19,7 @@ export function PaletteProvider({children}) {
 			try {
 				setLoading(true);
 				setError(false);
-				const res = await Axios.get(`/api/palette/${user.id}/fetchAll`);
+				const res = await Axios.get(`/api/palette/fetchAll`);
 				if (res.data.success) {
 					setPalettes(res.data.palettes);
 				} else {
@@ -44,6 +44,12 @@ export function PaletteProvider({children}) {
 		setPalettes(newPalettes);
 	}
 
+	const savePalette = (newPalette) => {
+		// TODO: ADD API CALL TO SAVE
+		const newPalettes = [newPalette, ...palettes];
+		setPalettes(newPalettes);
+	}
+
 	const value = {
 		palettes,
 		singlePalette,
@@ -52,6 +58,7 @@ export function PaletteProvider({children}) {
 	}
 
 	const dispatch = {
+		savePalette,
 		deletePalette
 	};
 

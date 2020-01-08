@@ -20,14 +20,12 @@ import MiniPalette from "./MiniPalette";
 import { usePalette, usePaletteDispatch } from '../contexts/PaletteContext';
 
 function PaletteList(props) {
-	console.log("PALETTEEEEE LIST")
+	
 	const [open, setOpen] = useToggle();
 	const [deletingID, setDeletingID] = useState('');
 	const { palettes, loading, error } = usePalette();
 	const { deletePalette } = usePaletteDispatch();
 	
-	console.log(palettes, loading, error);
-
 	const openDeleteDialog = (id) => {
 		setOpen(true);
 		setDeletingID(id)

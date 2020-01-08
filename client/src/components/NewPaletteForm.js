@@ -1,94 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
+import chroma from "chroma-js";
 import classNames from "classnames";
-import PaletteFormNav from './PaletteFormNav';
+import { arrayMove } from "react-sortable-hoc";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
-import { arrayMove } from "react-sortable-hoc";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import Axios from "axios";
+import Page from "./Page";
+import PaletteFormNav from "./PaletteFormNav";
 import DraggableColorList from './DraggableColorList';
 import ColorPickerForm from "./ColorPickerForm";
-import styles from '../styles/NewPaletteFormStyles';
 import defaultPalettes from '../defaultPalettes';
+import useToggle from '../hooks/useToggle';
+import { usePalette, usePaletteDispatch } from '../contexts/PaletteContext';
+import styles from "../styles/NewPaletteFormStyles";
 
-class NewPaletteForm extends React.Component {
-	static defaultProps = {
-		maxColors: 20
-	}
+
+const MAX_COLORS = 20;
+
+function NewPaletteForm(props) {
+	// TODO: Decide wether to use default palette or not
+	const [colors, setColors] = useState(defaultPalettes[0].colors);
+	const [open, toggleDrawer] = useToggle(true);
+
+	const { palettes } = usePalette();
+	const { savePalette } = usePaletteDispatch();
+
+	const { classes } = props;
 	
-	state = {
-		open: true,
-		colors: defaultPalettes[0].colors
+	const paletteFull = colors.length >= MAX_COLORS;
+
+	const addNewColor = (newColor) => {
+		const newColors = [...colors, newColor];
+		setColors(newColors);
 	};
 
-	toggleDrawer = () => {
-		this.setState(prevState => ({ open: !prevState.open }));
+	const removeColor = (colorName) => {
+		const newColors = colors.filter(color => color.name !== colorName);
+		setColors(newColors);
+	};
+	
+	const clearColors = () => {
+		setColors([]);
 	};
 
-	addNewColor = (newColor) => {
-		this.setState(prevState => ({ colors: [...prevState.colors, newColor], newColorName: '' }));
-	};
 
-	handleSubmit = (newPaletteName) => {
-		const newPalette = {
-			id: newPaletteName.toLowerCase().replace(/ /g, "-"),
-			paletteName: newPaletteName,
-			colors: this.state.colors
-		};
-		this.props.savePalette(newPalette);
-		this.props.history.push('/');
-	}
-
-	removeColor = (colorName) => {
-		this.setState({
-			colors: this.state.colors.filter(color => color.name !== colorName)
-		});
-	}
-
-	onSortEnd = ({ oldIndex, newIndex }) => {
-		this.setState(({colors}) => ({
-			colors: arrayMove(colors, oldIndex, newIndex)
-		}));
-	}
-
-	clearColors = () => {
-		this.setState({
-			colors: []
-		});
-	}
-
-	addRandomColor = () => {
-		const allColors = this.props.palettes.map(palette => palette.colors).flat();
-		let random = Math.floor(Math.random() * allColors.length);
-		let randomColor = allColors[random];
-		let isDuplicateColor = true;
-		while (isDuplicateColor) {
-			random = Math.floor(Math.random() * allColors.length);
-			randomColor = allColors[random];
-			isDuplicateColor = this.state.colors.some(
-				// eslint-disable-next-line no-loop-func
-				color => color.name === randomColor.name
-			);
+	const generateRandomColor = () => {
+		let hexCode = chroma.random().hex();
+		const newColor = {
+			name: hexCode,
+			color: hexCode
 		}
-		this.setState({colors: [...this.state.colors, randomColor] })
-	}
+		return newColor;
+	};
 
-	render() {
-		const { classes, maxColors, palettes } = this.props;
-		const { open, colors } = this.state;
+	const addRandomColor = () => {
+		let duplicateColor = true;
+		let randomColor;
+		while (duplicateColor) {
+			randomColor = generateRandomColor();
+			// eslint-disable-next-line no-loop-func
+			duplicateColor = colors.some(color => color.color.toLowerCase() === randomColor.color.toLowerCase());
+		}
+		const newColors = [...colors, randomColor];
+		setColors(newColors);
+	};
 
-		const paletteFull = colors.length >= maxColors;
+	// TODO: ADD PALETTE SAVE METHOD IN DISPATCH
+	const handleSubmit = async (newPaletteName) => {
+		const newPalette = {
+			paletteName: newPaletteName,
+			colors: colors
+		};
+		try {
+			const res = await Axios.post("/api/palette/new", newPalette);
+			if (res.data.success) {
+				savePalette(res.data.palette);
+				props.history.push("/");
+			}
+		} catch (err) {
+			// TODO: HANDLE ERROR
+			console.log(err);
+		}
+	};
 
-		return (
+	const onSortEnd = ({ oldIndex, newIndex }) => {
+		const newColors = arrayMove(colors, oldIndex, newIndex);
+		setColors(newColors);
+	};
+
+	return (
+		<Page>
 			<div className={classes.root}>
 				<PaletteFormNav
 					open={open}
 					palettes={palettes}
-					handleSubmit={this.handleSubmit}
-					toggleDrawer={this.toggleDrawer}
+					handleSubmit={handleSubmit}
+					toggleDrawer={toggleDrawer}
 				/>
 				<Drawer
 					className={classes.drawer}
@@ -100,19 +112,21 @@ class NewPaletteForm extends React.Component {
 					}}
 				>
 					<div className={classes.drawerHeader}>
-						<IconButton onClick={this.toggleDrawer}>
+						<IconButton onClick={toggleDrawer}>
 							<ChevronLeftIcon />
 						</IconButton>
 					</div>
 					<Divider />
 					<div className={classes.container}>
-						<Typography variant="h4" gutterBottom>Design Your Palette</Typography>
+						<Typography variant="h4" gutterBottom>
+							Design Your Palette
+						</Typography>
 						<div className={classes.buttons}>
 							<Button
 								className={classes.button}
 								variant="contained"
 								color="secondary"
-								onClick={this.clearColors}
+								onClick={clearColors}
 							>
 								Clear Palette
 							</Button>
@@ -120,17 +134,13 @@ class NewPaletteForm extends React.Component {
 								variant="contained"
 								color="primary"
 								className={classes.button}
-								onClick={this.addRandomColor}
+								onClick={addRandomColor}
 								disabled={paletteFull}
 							>
 								Random Color
 							</Button>
 						</div>
-						<ColorPickerForm
-							paletteFull={paletteFull}
-							colors={colors}
-							addNewColor={this.addNewColor}
-						/>
+						<ColorPickerForm paletteFull={paletteFull} colors={colors} addNewColor={addNewColor} />
 					</div>
 				</Drawer>
 				<main
@@ -140,16 +150,16 @@ class NewPaletteForm extends React.Component {
 				>
 					<div className={classes.drawerHeader} />
 					<DraggableColorList
-						colors={this.state.colors}
-						removeColor={this.removeColor}
+						colors={colors}
+						removeColor={removeColor}
 						axis={"xy"}
 						distance={10}
-						onSortEnd={this.onSortEnd}
+						onSortEnd={onSortEnd}
 					/>
 				</main>
 			</div>
-		);
-	}
+		</Page>
+	);
 }
 
 export default withStyles(styles, { withTheme: true })(NewPaletteForm);
