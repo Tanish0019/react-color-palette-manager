@@ -18,6 +18,7 @@ import useToggle from '../hooks/useToggle';
 import Page from "./Page";
 import MiniPalette from "./MiniPalette";
 import { usePalette, usePaletteDispatch } from '../contexts/PaletteContext';
+import Axios from 'axios';
 
 function PaletteList(props) {
 	
@@ -36,9 +37,20 @@ function PaletteList(props) {
 		setDeletingID("");
 	};
 
-	const handleDelete = () => {
-		deletePalette(deletingID);
-		closeDeleteDialog();
+	const handleDelete = async() => {
+		try {
+			const res = await Axios.delete(`/api/palette/${deletingID}`);
+			if (res.data.success) {
+				deletePalette(deletingID);
+			} else {
+				throw Error(res.data.message);
+			}
+		} catch (err) {
+			//TODO: Handle error
+			console.log(err);
+		} finally {
+			closeDeleteDialog();
+		}
 	};
 
 	const loader = (

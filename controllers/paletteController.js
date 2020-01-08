@@ -17,8 +17,9 @@ module.exports = {
 					}
 				})
 				.select('palettes -_id');
+			
 			const palettes = data.palettes;
-			console.log(palettes);
+			
 			return res.status(200).json({
 				success: true,
 				palettes
@@ -54,6 +55,7 @@ module.exports = {
 	newPalette: async (req, res, next) => {
 		try {
 			const userID  = req.user.id;
+			
 			const newPaletteData = req.body;
 			const newPalette = new Palette(newPaletteData);
 			
@@ -77,23 +79,25 @@ module.exports = {
 
 	deletePalette: async(req, res, next) => {
 		try {
-			const { paletteID, userID } = req.params;
-			// TODO: CHECK WITH REQ.USER.ID
-
-			// const palette = await Palette.deleteOne({id: paletteID});
+			const { paletteID } = req.params;
+			const userID = req.user.id;
+			console.log("controller");
 			
-			// if (!palette) {
-			// 	return res.status(404).json({
-			// 		success: false,
-			// 		message: "Palette does not exist"
-			// 	})
-			// }
+			const palette = await Palette.findOneAndRemove({_id: paletteID});
 
-			// console.log(user);
+			if (!palette) {
+				return res.status(404).json({
+					success: false,
+					message: "Palette does not exist"
+				});
+			}
 
-			// // await User.save();
+			await User.update(
+				{_id: userID},
+				{"$pull": {"palettes": paletteID}}
+			);
 			
-			// return res.status(200).json({ success: true });
+			return res.status(200).json({ success: true, message: "Palette Successfully Deleted!" });
 			
 		} catch(err) {
 			next(new Error(err));

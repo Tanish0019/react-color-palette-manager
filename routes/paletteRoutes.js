@@ -6,6 +6,6 @@ router.get("/:paletteID", paletteController.fetchOne);
 
 router.post('/new', paletteController.newPalette);
 
-router.delete('/:userID/:paletteID', paletteController.deletePalette);
+router.delete('/:paletteID', paletteController.deletePalette);
 
 module.exports = router;
