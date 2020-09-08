@@ -7,7 +7,7 @@ export default function NotFound() {
 		<div
 			style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
 		>
-			<Typography variant='h3'>
+			<Typography variant='h4'>
 				404 Not Found! <WarningIcon fontSize='large' />
 			</Typography>
 		</div>

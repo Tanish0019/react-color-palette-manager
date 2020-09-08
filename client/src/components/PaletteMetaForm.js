@@ -49,6 +49,7 @@ export default function PaletteMetaForm(props) {
 					<Button
 						variant='contained'
 						color='secondary'
+						disabled={newPaletteName === ''}
 						onClick={() => handleSubmit(newPaletteName)}
 					>
 						Save Palette

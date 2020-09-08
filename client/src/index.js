@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { UserProvider } from './contexts/UserContext';
-import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
 
 ReactDOM.render(
@@ -11,5 +10,3 @@ ReactDOM.render(
 	</UserProvider>,
 	document.getElementById('root')
 );
-
-serviceWorker.register();
