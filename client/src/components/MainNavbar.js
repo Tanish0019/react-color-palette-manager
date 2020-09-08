@@ -24,7 +24,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	title: {
 		flexGrow: 1,
-		color: '#fff',
+		'& img': {
+			height: '60px',
+			width: '120px',
+		},
 	},
 }));
 
@@ -46,9 +49,9 @@ export default function MainNavbar() {
 		<div className={classes.root}>
 			<AppBar position='static'>
 				<Toolbar>
-					<Typography className={classes.title} variant='h6'>
-						React Color
-					</Typography>
+					<div className={classes.title}>
+						<img src='/logo.png' alt='logo' />
+					</div>
 					{userData && (
 						<div>
 							<Link to={'/palette/new'}>

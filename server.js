@@ -12,7 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const PORT = process.env.PORT || 5000;
 
-const { mongodbURI, sessionSecret } = require('./configuration');
+const { origin, mongodbURI, sessionSecret } = require('./configuration');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -25,7 +25,7 @@ app.use(morgan('dev'));
 
 app.use(
 	cors({
-		origin: 'http://localhost:3000',
+		origin,
 		credentials: true,
 	})
 );
