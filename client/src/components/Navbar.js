@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Select from '@material-ui/core/Select';
@@ -9,12 +9,16 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slider from '@material-ui/core/Slider';
-import styles from '../styles/NavbarStyles';
 import useToggle from '../hooks/useToggle';
+import styles from '../styles/NavbarStyles';
 
-const Navbar = (props) => {
+const useStyles = makeStyles(styles);
+
+export default function Navbar(props) {
 	const [format, setFormat] = useState('hex');
 	const [snackbarOpen, toggleSnackbar] = useToggle(false);
+
+	const classes = useStyles();
 
 	const handleSelectChange = (event) => {
 		const format = event.target.value;
@@ -33,7 +37,7 @@ const Navbar = (props) => {
 		);
 	};
 
-	const { level, changeLevel, showingAllColors, classes, handleBack, loading } = props;
+	const { level, changeLevel, showingAllColors, handleBack, loading } = props;
 
 	const renderNavbarContent = () => {
 		if (loading) {
@@ -100,6 +104,4 @@ const Navbar = (props) => {
 			{renderNavbarContent()}
 		</nav>
 	);
-};
-
-export default withStyles(styles)(Navbar);
+}

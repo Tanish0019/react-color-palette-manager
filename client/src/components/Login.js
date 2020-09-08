@@ -8,7 +8,7 @@ import { useUser } from '../contexts/UserContext';
 import MainNavbar from './MainNavbar';
 import Loader from './Loader';
 
-const Login = () => {
+export default function Login() {
 	const [loading, setLoading] = useState(false);
 
 	const { login } = useUser();
@@ -61,6 +61,4 @@ const Login = () => {
 			</div>
 		</Page>
 	);
-};
-
-export default Login;
+}

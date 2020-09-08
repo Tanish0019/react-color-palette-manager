@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import chroma from 'chroma-js';
+import { makeStyles } from '@material-ui/core/styles';
 import { toast } from 'react-toastify';
 import classNames from 'classnames';
 import Axios from 'axios';
@@ -10,7 +11,6 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { arrayMove } from 'react-sortable-hoc';
-import { withStyles } from '@material-ui/core/styles';
 import Page from './Page';
 import PaletteFormNav from './PaletteFormNav';
 import DraggableColorList from './DraggableColorList';
@@ -19,12 +19,13 @@ import useToggle from '../hooks/useToggle';
 import styles from '../styles/NewPaletteFormStyles';
 import { MAX_COLORS, DEFAULT_PALETTES } from '../constants';
 
-function NewPaletteForm(props) {
-	// TODO: Decide wether to use default palette or not
+const useStyles = makeStyles(styles);
+
+export default function NewPaletteForm(props) {
 	const [colors, setColors] = useState(DEFAULT_PALETTES[0].colors);
 	const [open, toggleDrawer] = useToggle(true);
 
-	const { classes } = props;
+	const classes = useStyles();
 
 	const paletteFull = colors.length >= MAX_COLORS;
 
@@ -146,5 +147,3 @@ function NewPaletteForm(props) {
 		</Page>
 	);
 }
-
-export default withStyles(styles, { withTheme: true })(NewPaletteForm);

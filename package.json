@@ -20,7 +20,8 @@
 		"nodemon": "^2.0.2"
 	},
 	"engines": {
-		"node": "12.14.0"
+		"node": "12.14.0",
+		"npm": "6.13.4"
 	},
 	"scripts": {
 		"start": "node server.js",

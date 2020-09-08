@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import chroma from 'chroma-js';
-import { ChromePicker } from 'react-color';
+import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { ChromePicker } from 'react-color';
 import Button from '@material-ui/core/Button';
 import styles from '../styles/ColorPickerFormStyles';
 
-function ColorPickerForm(props) {
+const useStyles = makeStyles(styles);
+
+export default function ColorPickerForm(props) {
 	const [currentColor, setCurrentColor] = useState('teal');
 	const [newColorName, setNewColorName] = useState('');
 	const [errorText, setErrorText] = useState('');
-	const { paletteFull, classes, colors, addNewColor } = props;
+
+	const classes = useStyles();
+
+	const { paletteFull, colors, addNewColor } = props;
 
 	useEffect(() => {
 		setErrorText('');
@@ -80,5 +85,3 @@ function ColorPickerForm(props) {
 		</div>
 	);
 }
-
-export default withStyles(styles)(ColorPickerForm);

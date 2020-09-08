@@ -1,7 +1,7 @@
 import React from 'react';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const styles = {
+const useStyles = makeStyles({
 	paletteFooter: {
 		height: '5vh',
 		backgroundColor: '#181618',
@@ -13,11 +13,10 @@ const styles = {
 		paddingRight: '10px',
 		textTransform: 'uppercase',
 	},
-};
+});
 
-function Footer(props) {
-	const { paletteName, classes } = props;
+export default function Footer(props) {
+	const { paletteName } = props;
+	const classes = useStyles();
 	return <footer className={classes.paletteFooter}>{paletteName}</footer>;
 }
-
-export default withStyles(styles)(Footer);

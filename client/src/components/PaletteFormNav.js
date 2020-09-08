@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,10 +12,12 @@ import PaletteMetaForm from './PaletteMetaForm';
 import useToggle from '../hooks/useToggle';
 import styles from '../styles/PaletteFormNavStyles';
 
-function PaletteFormNav(props) {
-	const [formShowing, toggleForm] = useToggle();
+const useStyles = makeStyles(styles);
 
-	const { classes, open, handleSubmit } = props;
+export default function PaletteFormNav(props) {
+	const [formShowing, toggleForm] = useToggle();
+	const classes = useStyles();
+	const { open, handleSubmit } = props;
 	return (
 		<div className={classes.root}>
 			<AppBar
@@ -61,5 +63,3 @@ function PaletteFormNav(props) {
 		</div>
 	);
 }
-
-export default withStyles(styles, { withTheme: true })(PaletteFormNav);

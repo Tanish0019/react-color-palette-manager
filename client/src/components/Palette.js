@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Page from './Page';
 import Navbar from './Navbar';
 import Loader from './Loader';
@@ -12,6 +12,8 @@ import styles from '../styles/PaletteStyles';
 import useFetchData from '../hooks/useFetchData';
 import { generatePalette, getShades } from '../utils/colorHelper';
 
+const useStyles = makeStyles(styles);
+
 function Palette(props) {
 	const [format, setFormat] = useState('hex');
 	const [level, setLevel] = useState(500);
@@ -19,6 +21,7 @@ function Palette(props) {
 	const [paletteData, loading, error] = useFetchData(
 		`/api/palette/${props.match.params.paletteID}`
 	);
+	const classes = useStyles();
 
 	const changeLevel = (_, level) => {
 		setLevel(level);
@@ -27,8 +30,6 @@ function Palette(props) {
 	const handleFormatChange = (format) => {
 		setFormat(format);
 	};
-
-	const { classes } = props;
 
 	const renderContent = (showingAllColors) => {
 		if (loading) {
@@ -83,4 +84,4 @@ function Palette(props) {
 	);
 }
 
-export default withStyles(styles)(withRouter(Palette));
+export default withRouter(Palette);

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import styles from '../styles/ColorBoxStyles';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-function ColorBox(props) {
+const useStyles = makeStyles(styles);
+
+export default function ColorBox(props) {
 	const [copied, setCopied] = useState(false);
 	const [useEffectHandler, setUseEffectHandler] = useState(false);
+
+	const classes = useStyles(props);
 
 	const changeCopyState = () => {
 		setUseEffectHandler(!useEffectHandler);
@@ -16,7 +20,7 @@ function ColorBox(props) {
 		setTimeout(() => setCopied(false), 1000);
 	}, [useEffectHandler]);
 
-	const { name, color, colorId, showFullPalette, classes, selectColor } = props;
+	const { name, color, colorId, showFullPalette, selectColor } = props;
 
 	return (
 		<CopyToClipboard text={color} onCopy={changeCopyState}>
@@ -44,5 +48,3 @@ function ColorBox(props) {
 		</CopyToClipboard>
 	);
 }
-
-export default withStyles(styles)(ColorBox);
