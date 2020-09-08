@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
+import { toast } from 'react-toastify';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -39,15 +40,15 @@ function PaletteList(props) {
 
 	const handleDelete = async () => {
 		try {
-			const res = await Axios.delete(`/api/palette/${deletingID}`);
+			const res = await Axios.delete(`/api/palette/${deletingID}`, { withCredentials: true });
 			if (res.data.success) {
 				setPalettes((prevPalettes) => prevPalettes.filter((palette) => palette._id !== deletingID));
 			} else {
 				throw Error(res.data.message);
 			}
 		} catch (err) {
-			//TODO: Handle error
 			console.log(err);
+			toast.error('Some Error Occurred!');
 		} finally {
 			closeDeleteDialog();
 		}
@@ -57,7 +58,7 @@ function PaletteList(props) {
 		const fetchPalettes = async () => {
 			setLoading(true);
 			try {
-				const res = await Axios.get('/api/palette');
+				const res = await Axios.get('/api/palette', { withCredentials: true });
 				if (res.data.success) {
 					setPalettes(res.data.palettes);
 				} else {

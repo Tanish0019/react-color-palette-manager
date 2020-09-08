@@ -95,7 +95,7 @@ const Navbar = (props) => {
 	return (
 		<nav className={classes.navbar}>
 			<div className={classes.logo}>
-				<Link to='/'>React Color</Link>
+				<Link to='/'>Palette Star</Link>
 			</div>
 			{renderNavbarContent()}
 		</nav>

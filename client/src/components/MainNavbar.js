@@ -49,9 +49,9 @@ export default function MainNavbar() {
 		<div className={classes.root}>
 			<AppBar position='static'>
 				<Toolbar>
-					<div className={classes.title}>
-						<img src='/logo.png' alt='logo' />
-					</div>
+					<Typography variant='h6' className={classes.title}>
+						Palette Star
+					</Typography>
 					{userData && (
 						<div>
 							<Link to={'/palette/new'}>

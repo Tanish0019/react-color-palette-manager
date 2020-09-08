@@ -6,10 +6,12 @@ import PaletteList from './components/PaletteList';
 import Palette from './components/Palette';
 import NewPaletteForm from './components/NewPaletteForm';
 import NotFound from './components/NotFound';
+import { CssBaseline } from '@material-ui/core';
 
 export default function AppRouter() {
 	return (
 		<BrowserRouter>
+			<CssBaseline />
 			<Route
 				render={({ location }) => (
 					<TransitionGroup>

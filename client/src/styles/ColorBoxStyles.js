@@ -9,7 +9,7 @@ export default {
 		position: 'relative',
 		display: 'inline-block',
 		textTransform: 'uppercase',
-		marginBottom: '-4.5px',
+		marginBottom: '-5.5px',
 		cursor: 'pointer',
 		'&:hover button': {
 			opacity: 1,

@@ -7,8 +7,8 @@ export default function Error() {
 		<div
 			style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
 		>
-			<Typography variant='h2'>
-				<ErrorIcon /> Some Error Occured!
+			<Typography variant='h3'>
+				Some Error Occured! <ErrorIcon fontSize='large' />
 			</Typography>
 		</div>
 	);

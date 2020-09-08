@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import chroma from 'chroma-js';
+import { toast } from 'react-toastify';
 import classNames from 'classnames';
 import Axios from 'axios';
 import Drawer from '@material-ui/core/Drawer';
@@ -72,13 +73,14 @@ function NewPaletteForm(props) {
 			colors: colors,
 		};
 		try {
-			const res = await Axios.post('/api/palette/new', newPalette);
+			const res = await Axios.post('/api/palette/new', newPalette, { withCredentials: true });
 			if (res.data.success) {
 				props.history.push('/');
 			}
 		} catch (err) {
 			// TODO: HANDLE ERROR
 			console.log(err);
+			toast.error('Some Error Occurred!');
 		}
 	};
 

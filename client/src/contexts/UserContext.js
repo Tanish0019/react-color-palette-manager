@@ -11,7 +11,7 @@ export function UserProvider(props) {
 		const fetchUser = async () => {
 			setLoading(true);
 			try {
-				const res = await Axios.get('/api/auth/user');
+				const res = await Axios.get('/api/auth/user', { withCredentials: true });
 				if (res.data.success) {
 					setUserData(res.data.user);
 				}
@@ -31,7 +31,7 @@ export function UserProvider(props) {
 
 	const logout = async () => {
 		try {
-			const res = await Axios.get('/api/auth/logout');
+			const res = await Axios.get('/api/auth/logout', { withCredentials: true });
 			if (res.data.success) {
 				setUserData(null);
 			} else {

@@ -10,7 +10,7 @@ export default function useFetchData(url) {
 		try {
 			setLoading(true);
 			setError(false);
-			const res = await Axios.get(url);
+			const res = await Axios.get(url, { withCredentials: true });
 			if (res.data.success) {
 				setData(res.data);
 			} else {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
+import { toast } from 'react-toastify';
 import { GoogleLogin } from 'react-google-login';
 import { Typography } from '@material-ui/core';
 import Page from './Page';
@@ -18,17 +19,21 @@ const Login = () => {
 			const res = await Axios.post('/api/auth/google-login', { tokenId });
 			if (res.data.success) {
 				login(res.data.user);
+			} else {
+				throw new Error();
 			}
 		} catch (err) {
-			console.log(err);
+			toast.error('Some Error Occurred!');
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	const handleFailure = (response) => {
-		// TODO: Handle Failure!
 		console.log(response);
+		if (response.error !== 'popup_closed_by_user') {
+			toast.error('Some Error Occurred!');
+		}
 	};
 
 	return (

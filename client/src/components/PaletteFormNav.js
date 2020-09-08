@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,7 +18,6 @@ function PaletteFormNav(props) {
 	const { classes, open, handleSubmit } = props;
 	return (
 		<div className={classes.root}>
-			<CssBaseline />
 			<AppBar
 				position='fixed'
 				className={classNames(classes.appBar, {
