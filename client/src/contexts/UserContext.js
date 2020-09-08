@@ -1,35 +1,56 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import Axios from 'axios';
 
 const UserContext = createContext();
+
 export function UserProvider(props) {
-	const [authenticated, setAuthenticated] = useState(false);
-	const [user, setUser] = useState(null);
-	
-	const dummyData = {
-		displayName: "Tanish Grover",
-		id: "5e10a821bcfb6cc9b5b80f51"
-	};
+	const [userData, setUserData] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		if (localStorage.getItem("access_token")) {
-			// TODO: ADD JWT LOGIC OVER HERE
-			setAuthenticated(true);
-			setUser(dummyData);
-		} else {
-			setAuthenticated(false);
-			setUser(null);
-		}
+		const fetchUser = async () => {
+			setLoading(true);
+			try {
+				const res = await Axios.get('/api/auth/user');
+				if (res.data.success) {
+					setUserData(res.data.user);
+				}
+			} catch (err) {
+				console.log(err);
+				setUserData(null);
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchUser();
 	}, []);
 
+	const login = (user) => {
+		setUserData(user);
+	};
+
+	const logout = async () => {
+		try {
+			const res = await Axios.get('/api/auth/logout');
+			if (res.data.success) {
+				setUserData(null);
+			} else {
+				throw new Error('Could not logout user!');
+			}
+		} catch (err) {
+			console.log(err);
+		}
+		setUserData(null);
+	};
+
 	const defaultContext = {
-		authenticated, 
-		user
-	}
-	return (
-		<UserContext.Provider value={defaultContext}>
-			{props.children}
-		</UserContext.Provider>
-	);
+		loading,
+		userData,
+		login,
+		logout,
+	};
+
+	return <UserContext.Provider value={defaultContext}>{props.children}</UserContext.Provider>;
 }
 
 export const useUser = () => useContext(UserContext);

@@ -1,18 +1,18 @@
 const styles = {
 	picker: {
-		width: "100% !important",
-		marginTop: "2rem"
-	},
-	addColor: {
-		width: "100%",
-		padding: "1rem",
-		marginTop: "1rem",
-		fontSize: "2rem"
+		width: '90% !important',
+		margin: '0 auto',
+		marginTop: '2rem',
 	},
 	colorInput: {
-		width: "100%",
-		height: "70px"
-	}
+		marginTop: '30px',
+		width: '100%',
+	},
+	addColor: {
+		width: '100%',
+		marginTop: '1rem',
+		fontSize: '1.5rem',
+	},
 };
 
 export default styles;

@@ -1,68 +1,82 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ChromePicker } from "react-color";
-import { withStyles } from "@material-ui/core/styles";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import Button from "@material-ui/core/Button";
+import React, { useState, useEffect } from 'react';
+import chroma from 'chroma-js';
+import { ChromePicker } from 'react-color';
+import { TextField } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import styles from '../styles/ColorPickerFormStyles';
 
 function ColorPickerForm(props) {
-	const [currentColor, setCurrentColor] = useState("teal");
-	const [newColorName, setNewColorName] = useState("");
+	const [currentColor, setCurrentColor] = useState('teal');
+	const [newColorName, setNewColorName] = useState('');
+	const [errorText, setErrorText] = useState('');
 	const { paletteFull, classes, colors, addNewColor } = props;
 
 	useEffect(() => {
-		// FIXME: VALIDATOR DOESN'T WORK WITH useEffect :/
-		ValidatorForm.addValidationRule("isColorNameUnique", value =>
-			colors.every(({ name }) => name.toLowerCase() !== value.toLowerCase())
-		);
-		ValidatorForm.addValidationRule("isColorCodeUnique", value =>
-			colors.every(({ color }) => color !== currentColor)
-		);
-	}, []);
+		setErrorText('');
+	}, [newColorName, currentColor]);
 
-	const updateColor = color => {
-		setCurrentColor(color.hex);
-	}
+	const uniqueColorName = () =>
+		colors.every(({ name }) => name.toLowerCase() !== newColorName.toLowerCase());
 
-	const handleSubmit = () => {
-		const newColor = {
-			color: currentColor,
-			name: newColorName
-		};
-		addNewColor(newColor);
-		setNewColorName("");
+	const uniqueColor = () => colors.every(({ color }) => color !== currentColor);
+
+	const validate = () => {
+		if (!uniqueColor()) {
+			return 'Color already exists!';
+		}
+		if (newColorName === '') {
+			return 'Color name cannot be empty!';
+		}
+		if (!uniqueColorName()) {
+			return 'Color name already exists!';
+		}
+		return '';
 	};
 
+	const updateColor = (color) => {
+		setCurrentColor(color.hex);
+	};
+
+	const handleSubmit = () => {
+		const errorMessage = validate();
+		if (errorMessage !== '') {
+			setErrorText(errorMessage);
+			return;
+		}
+		const newColor = {
+			color: currentColor,
+			name: newColorName,
+		};
+		setErrorText('');
+		addNewColor(newColor);
+		setNewColorName('');
+	};
+	const addButtonTextColor =
+		chroma(currentColor).luminance() <= 0.15 ? 'rgba(240, 240, 240, 0.8)' : 'rgba(0, 0, 0, 0.8)';
 	return (
 		<div>
 			<ChromePicker color={currentColor} onChange={updateColor} className={classes.picker} />
-			<ValidatorForm instantValidate={false} onSubmit={handleSubmit}>
-				<TextValidator
-					value={newColorName}
-					margin="normal"
-					className={classes.colorInput}
-					placeholder="Color Name"
-					name="newColorName"
-					variant="filled"
-					onChange={e => setNewColorName(e.target.value)}
-					validators={["required", "isColorNameUnique", "isColorCodeUnique"]}
-					errorMessages={[
-						"This field is required",
-						"Color Name Already Exists!",
-						"Color Already Exists!"
-					]}
-				/>
-				<Button
-					variant="contained"
-					color="primary"
-					style={{ background: currentColor }}
-					type="submit"
-					className={classes.addColor}
-					disabled={paletteFull}
-				>
-					{paletteFull ? "Palette Full" : "Add Color"}
-				</Button>
-			</ValidatorForm>
+			<TextField
+				value={newColorName}
+				className={classes.colorInput}
+				placeholder='Color Name'
+				name='newColorName'
+				onChange={(e) => setNewColorName(e.target.value)}
+				error={errorText !== ''}
+				helperText={errorText}
+			/>
+			<Button
+				variant='contained'
+				size='medium'
+				style={{ backgroundColor: currentColor, color: addButtonTextColor }}
+				type='submit'
+				onClick={handleSubmit}
+				className={classes.addColor}
+				disabled={paletteFull}
+			>
+				{paletteFull ? 'Palette Full' : 'Add Color'}
+			</Button>
 		</div>
 	);
 }

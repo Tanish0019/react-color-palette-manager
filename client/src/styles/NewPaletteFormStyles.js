@@ -1,59 +1,59 @@
-import { DRAWER_WIDTH } from "../constants";
+import { DRAWER_WIDTH } from '../constants';
 const drawerWidth = DRAWER_WIDTH;
 
-const styles = theme => ({
+const styles = (theme) => ({
 	root: {
-		display: "flex"
+		display: 'flex',
 	},
 	drawer: {
 		width: drawerWidth,
-		flexShrink: 0
+		flexShrink: 0,
 	},
 	drawerPaper: {
 		width: drawerWidth,
-		display: "flex",
-		alignItems: "center"
+		display: 'flex',
+		alignItems: 'center',
 	},
 	drawerHeader: {
-		display: "flex",
-		alignItems: "center",
-		padding: "0 8px",
+		display: 'flex',
+		alignItems: 'center',
+		padding: '0 8px',
 		...theme.mixins.toolbar,
 		width: '100%',
-		justifyContent: "flex-end"
+		justifyContent: 'flex-end',
 	},
 	content: {
-		height: "calc(100vh - 64px)",
+		height: 'calc(100vh - 64px)',
 		flexGrow: 1,
 		padding: 0,
-		transition: theme.transitions.create("margin", {
+		transition: theme.transitions.create('margin', {
 			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen
+			duration: theme.transitions.duration.leavingScreen,
 		}),
 		marginLeft: -drawerWidth,
-		
 	},
 	contentShift: {
-		transition: theme.transitions.create("margin", {
+		transition: theme.transitions.create('margin', {
 			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen
+			duration: theme.transitions.duration.enteringScreen,
 		}),
-		marginLeft: 0
+		marginLeft: 0,
 	},
 	container: {
-		width: "90%",
-		display: "flex",
-		flexDirection: "column",
-		justifyContent: "center",
-		alignItems: "center",
-		height: "100%"
+		width: '90%',
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'start',
+		alignItems: 'center',
+		height: '100%',
 	},
 	buttons: {
-		width: "100%"
+		display: 'flex',
+		justifyContent: 'space-around',
+		'& button:first-child': {
+			marginRight: '10px',
+		},
 	},
-	button: {
-		width: "50%"
-	}
 });
 
 export default styles;

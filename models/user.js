@@ -3,16 +3,26 @@ const { Schema } = mongoose;
 
 // TODO: ADD DEFAULT PALETTES
 const UserSchema = new Schema({
-	email: String,
-	password: String,
-	firstName: String,
-	lastName: String,
-	displayName: String,
-	provider: String,
-	providerID: String,
-	palettes: [
-		{type: Schema.Types.ObjectId, ref: 'Palette'}
-	]
+	email: {
+		type: String,
+		required: true,
+	},
+	password: {
+		type: String,
+	},
+	name: {
+		type: String,
+		required: true,
+	},
+	picture: {
+		type: String,
+	},
+	auth_type: {
+		type: String,
+		default: 'google',
+		required: true,
+	},
+	palettes: [{ type: Schema.Types.ObjectId, ref: 'Palette' }],
 });
 
 const UserModel = mongoose.model('User', UserSchema);

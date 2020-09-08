@@ -1,47 +1,47 @@
-import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { withStyles } from '@material-ui/core';
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
-import Avatar from "@material-ui/core/Avatar";
-import CheckIcon from "@material-ui/icons/Check";
-import CloseIcon from "@material-ui/icons/Close";
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import Avatar from '@material-ui/core/Avatar';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import blue from '@material-ui/core/colors/blue';
-import red from "@material-ui/core/colors/red";
+import red from '@material-ui/core/colors/red';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { withStyles, Typography, Button } from '@material-ui/core';
 import styles from '../styles/PaletteListStyles';
 import useToggle from '../hooks/useToggle';
-import Page from "./Page";
-import MiniPalette from "./MiniPalette";
-import { usePalette, usePaletteDispatch } from '../contexts/PaletteContext';
-import Axios from 'axios';
+import Page from './Page';
+import MiniPalette from './MiniPalette';
+import Loader from './Loader';
+import MainNavbar from './MainNavbar';
+import { Link } from 'react-router-dom';
 
 function PaletteList(props) {
-	
 	const [open, setOpen] = useToggle();
 	const [deletingID, setDeletingID] = useState('');
-	const { palettes, loading, error } = usePalette();
-	const { deletePalette } = usePaletteDispatch();
-	
+	const [loading, setLoading] = useState(true);
+	const [palettes, setPalettes] = useState([]);
+	const { classes } = props;
 	const openDeleteDialog = (id) => {
 		setOpen(true);
-		setDeletingID(id)
-	}
+		setDeletingID(id);
+	};
 
 	const closeDeleteDialog = () => {
 		setOpen(false);
-		setDeletingID("");
+		setDeletingID('');
 	};
 
-	const handleDelete = async() => {
+	const handleDelete = async () => {
 		try {
 			const res = await Axios.delete(`/api/palette/${deletingID}`);
 			if (res.data.success) {
-				deletePalette(deletingID);
+				setPalettes((prevPalettes) => prevPalettes.filter((palette) => palette._id !== deletingID));
 			} else {
 				throw Error(res.data.message);
 			}
@@ -53,33 +53,60 @@ function PaletteList(props) {
 		}
 	};
 
-	const loader = (
-		<h1>Loading</h1>
-	)
+	useEffect(() => {
+		const fetchPalettes = async () => {
+			setLoading(true);
+			try {
+				const res = await Axios.get('/api/palette');
+				if (res.data.success) {
+					setPalettes(res.data.palettes);
+				} else {
+					throw new Error(res.data.message);
+				}
+			} catch (err) {
+				// TODO: Handle Error
+				console.log(err);
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchPalettes();
+	}, []);
 
-	const { classes } = props;
+	const renderMiniPalettes = () => {
+		if (palettes.length === 0) {
+			return (
+				<div className={classes.emptyPalette}>
+					<Typography variant='h3'>You don't have any color palettes yet!</Typography>
+					<Link to={'/palette/new'}>
+						<Button variant='outlined' size='large'>
+							Get Started!
+						</Button>
+					</Link>
+				</div>
+			);
+		} else {
+			return (
+				<TransitionGroup className={classes.palettes}>
+					{palettes.map((palette) => (
+						<CSSTransition key={palette._id} classNames='fade' timeout={500}>
+							<MiniPalette {...palette} id={palette._id} openDialog={openDeleteDialog} />
+						</CSSTransition>
+					))}
+				</TransitionGroup>
+			);
+		}
+	};
+
 	return (
 		<Page>
+			<MainNavbar />
 			<div className={classes.root}>
 				<div className={classes.container}>
-					<nav className={classes.nav}>
-						<h1>React Colors</h1>
-						<Link to="/palette/new">Create Palette</Link>
-					</nav>
-					{loading ? (
-						loader
-					) : (
-						<TransitionGroup className={classes.palettes}>
-							{palettes.map(palette => (
-								<CSSTransition key={palette._id} classNames="fade" timeout={500}>
-									<MiniPalette {...palette} id={palette._id} openDialog={openDeleteDialog} />
-								</CSSTransition>
-							))}
-						</TransitionGroup>
-					)}
+					{loading ? <Loader size={100} thickness={3.6} /> : renderMiniPalettes()}
 				</div>
-				<Dialog open={open} aria-labelledby="delete-dialog-title" onClose={closeDeleteDialog}>
-					<DialogTitle id="delete-dialog-title">Delete This Palette?</DialogTitle>
+				<Dialog open={open} aria-labelledby='delete-dialog-title' onClose={closeDeleteDialog}>
+					<DialogTitle id='delete-dialog-title'>Delete This Palette?</DialogTitle>
 					<List>
 						<ListItem button onClick={handleDelete}>
 							<ListItemAvatar>
@@ -87,7 +114,7 @@ function PaletteList(props) {
 									<CheckIcon />
 								</Avatar>
 							</ListItemAvatar>
-							<ListItemText primary="Delete" />
+							<ListItemText primary='Delete' />
 						</ListItem>
 						<ListItem button onClick={closeDeleteDialog}>
 							<ListItemAvatar>
@@ -95,7 +122,7 @@ function PaletteList(props) {
 									<CloseIcon />
 								</Avatar>
 							</ListItemAvatar>
-							<ListItemText primary="Cancel" />
+							<ListItemText primary='Cancel' />
 						</ListItem>
 					</List>
 				</Dialog>
@@ -105,5 +132,3 @@ function PaletteList(props) {
 }
 
 export default withStyles(styles)(PaletteList);
-
-

@@ -1,8 +1,9 @@
 module.exports = {
-	clientID: process.env['GOOGLE_CLIENT_ID'],
-	clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
 	baseAPI: process.env['BASE_API'],
+	clientUri: process.env['CLIENT_URI'],
 	mongodbURI: process.env['MONGODB_URI'],
-	clientHomeUri: process.env['CLIENT_HOME_URI'],
-	sessionSecret: process.env['SESSION_SECRET']
-}
+	jwtSecret: process.env['JWT_SECRET'],
+	sessionSecret: process.env['SESSION_SECRET'],
+	googleClientID: process.env['GOOGLE_CLIENT_ID'],
+	googleClientSecret: process.env['GOOGLE_CLIENT_SECRET'],
+};

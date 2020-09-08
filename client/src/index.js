@@ -2,17 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { UserProvider } from './contexts/UserContext';
-import { PaletteProvider } from './contexts/PaletteContext';
-import './styles/index.css';
 import * as serviceWorker from './serviceWorker';
+import './styles/index.css';
 
 ReactDOM.render(
 	<UserProvider>
-		<PaletteProvider>
-			<App />
-		</PaletteProvider>
+		<App />
 	</UserProvider>,
-	document.getElementById("root")
+	document.getElementById('root')
 );
 
 serviceWorker.register();

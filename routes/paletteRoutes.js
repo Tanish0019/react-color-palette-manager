@@ -1,11 +1,13 @@
 const router = require('express').Router();
 const paletteController = require('../controllers/paletteController');
+const { isAuthenticated } = require('../middleware/authMiddleware');
 
-router.get('/fetchAll', paletteController.fetchAll);
-router.get("/:paletteID", paletteController.fetchOne);
+router.get('/', isAuthenticated, paletteController.fetchAll);
 
-router.post('/new', paletteController.newPalette);
+router.get('/:paletteID', isAuthenticated, paletteController.fetchOne);
 
-router.delete('/:paletteID', paletteController.deletePalette);
+router.post('/new', isAuthenticated, paletteController.newPalette);
+
+router.delete('/:paletteID', isAuthenticated, paletteController.deletePalette);
 
 module.exports = router;

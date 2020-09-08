@@ -1,21 +1,10 @@
-const router = require("express").Router();
-const passport = require('passport');
+const router = require('express').Router();
 const authController = require('../controllers/authController');
-const { isAuthenticated } = require("../middleware/authMiddleware");
-const { clientHomeUri } = require('../configuration');
+const { isAuthenticated } = require('../middleware/authMiddleware');
 
-router.get("/google",
-	passport.authenticate("google", {
-		scope: [
-			"https://www.googleapis.com/auth/userinfo.profile",
-			"https://www.googleapis.com/auth/userinfo.email"
-		]
-	})
-);
+router.post('/google-login', authController.googleLogin);
 
-router.get("/google/callback", passport.authenticate('google', { failureRedirect: clientHomeUri, successRedirect: clientHomeUri }));
-
-router.get("/user", isAuthenticated, authController.authenticatedUser);
+router.get('/user', isAuthenticated, authController.authenticatedUser);
 
 router.get('/logout', isAuthenticated, authController.logout);
 

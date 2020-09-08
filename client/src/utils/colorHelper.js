@@ -22,57 +22,57 @@ const levels = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
 // Main function
 const generatePalette = (starterPalette) => {
-	console.log(starterPalette);
 	let newPalette = {
 		paletteName: starterPalette.paletteName,
 		_id: starterPalette._id,
 		emoji: starterPalette.emoji,
-		colors: {}
+		colors: {},
 	};
 
 	for (let level of levels) {
-		if (level !== 50)
-			newPalette.colors[level] = [];
+		if (level !== 50) newPalette.colors[level] = [];
 	}
 
 	for (let color of starterPalette.colors) {
 		let scale = generateScale(color.color, 11);
-		
+
 		for (let i in scale) {
 			// Ignoring the all white level
 			if (i !== '0') {
 				newPalette.colors[levels[i]].push({
 					name: `${color.name} ${levels[i]}`,
-					id: color.name.toLowerCase().replace(/ /g, "-"),
+					id: color.name.toLowerCase().replace(/ /g, '-'),
 					hex: scale[i],
-					rgb: chroma(scale[i]).css()
-				})
+					rgb: chroma(scale[i]).css(),
+				});
 			}
 		}
 	}
 	return newPalette;
-}
+};
 
 // RETURNS THE RANGE OF THE COLORS
 // We go from color.darken(1.4) --- color --- white
 // to have a good balance of all saturations
 const getRange = (hexColor) => {
 	const rangeEnd = '#fff';
-	
-	return [
-		chroma(hexColor).darken(2.5).hex(),
-		hexColor,
-		rangeEnd
-	]
-}
+
+	return [chroma(hexColor).darken(2.5).hex(), hexColor, rangeEnd];
+};
 
 // Creates a scale of number of colors passed to the function
 // Ranging from the range we got back from the get range function
 const generateScale = (hexColor, numberOfColors) => {
-	return chroma.scale(getRange(hexColor))
-	.mode('lab')
-	.colors(numberOfColors)
-	.reverse();
-}
+	return chroma.scale(getRange(hexColor)).mode('lab').colors(numberOfColors).reverse();
+};
 
-export { generatePalette };
+const getShades = (palette, colorid) => {
+	let shades = [];
+	let allColors = palette.colors;
+	for (let key in allColors) {
+		shades = shades.concat(allColors[key].filter((color) => color.id === colorid));
+	}
+	return shades;
+};
+
+export { generatePalette, getShades };
