@@ -246,3 +246,5 @@ export const DEFAULT_PALETTES = [
 		],
 	},
 ];
+
+export const CLIENT_ID = '667907039901-gnar4chge39lpirj2k43itgah2g5o30v.apps.googleusercontent.com';

@@ -7,6 +7,7 @@ import Page from './Page';
 import { useUser } from '../contexts/UserContext';
 import MainNavbar from './MainNavbar';
 import Loader from './Loader';
+import { CLIENT_ID } from '../constants';
 
 export default function Login() {
 	const [loading, setLoading] = useState(false);
@@ -49,7 +50,7 @@ export default function Login() {
 						<>
 							<Typography variant='h4'>Get started with React Palette!</Typography>
 							<GoogleLogin
-								clientId='667907039901-gnar4chge39lpirj2k43itgah2g5o30v.apps.googleusercontent.com'
+								clientId={CLIENT_ID}
 								buttonText='Login with Google'
 								onSuccess={handleSuccess}
 								onFailure={handleFailure}
