@@ -1,6 +1,6 @@
 # Palette Star 🌟
 
-[![Website palettestar.herokuapp.com](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](https://palettestar.herokuapp.com/) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Tanish0019/react-color-palette-manager/issues) [![GitHub issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://github.com/Tanish0019/react-color-palette-manager/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Tanish0019/react-color-palette-manager/issues) [![GitHub issues](https://img.shields.io/github/issues/Tanish0019/react-color-palette-manager.svg)](https://github.com/Tanish0019/react-color-palette-manager/issues)
 
 Create and manage all your color palettes in one place!✨  
 
